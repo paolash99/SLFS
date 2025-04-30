@@ -4,13 +4,11 @@
 
 SLFS is built atop distributed key-value stores and supports both cloud-based and custom storage backends. By leveraging the elasticity of serverless platforms, SLFS offers dynamic scaling of file operations while maintaining competitive performance, scalability, and cost-efficiency when compared to traditional server-based distributed file systems.
 
----
 
 ## Getting Started
 
 Follow the steps below to deploy and run SLFS.
 
----
 
 ### 1. Set Up OpenWhisk
 
@@ -36,13 +34,11 @@ Follow the steps below to deploy and run SLFS.
      ./deploy-native.sh
      ```
 
----
 
 ### 2. Set Up the Backend
 
 - Launch an EC2 instance with the **SSBD AMI** for each backend node.
 
----
 
 ### 3. Set Up the Proxy
 
@@ -74,7 +70,6 @@ Repeat all steps below for each proxy node (skip step `c` for the second and thi
      ./start_proxy-new-2.sh
      ```
 
----
 
 ### 4. Format the Filesystem
 
