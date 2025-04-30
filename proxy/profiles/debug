@@ -1,0 +1,17 @@
+include(default)
+
+[settings]
+cppstd=20
+build_type=Debug
+compiler=gcc
+compiler.version=12
+folly:compiler=clang
+folly:compiler.version=11
+
+[options]
+
+[env]
+CXX=g++
+CC=gcc
+folly:CXX=clang++
+folly:CC=clang

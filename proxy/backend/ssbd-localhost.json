@@ -1,0 +1,17 @@
+{
+    "type": "wakeup",
+    "launch": "server",
+    "proxyhost": "%1%",
+    "proxyport": "%2%",
+    "blocksize":  %3%,
+    "caching":    %4%,
+    "cachesize":  %5%,
+    "cache-policy": "%6%",
+    "storagetype": "ssbd",
+    "storageconfig": {
+        "hosts": [
+            {"host": "192.168.0.96", "port": "13000"}
+        ],
+        "replication_size": 1
+    }
+}

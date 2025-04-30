@@ -1,0 +1,37 @@
+
+#FROM hare1039/dockerskeleton:latest AS builder
+
+#FROM openwhisk/dockerskeleton
+FROM openwhisk/dockerskeleton:latest
+
+RUN apk update && \
+    apk add --no-cache --virtual .build-deps \
+                                 bzip2-dev \
+                                 g++ \
+                                 libc-dev \
+                                 cassandra-cpp-driver-dev \
+                                 openssl-libs-static zlib-static \
+                                 curl-dev curl-static nghttp2-static zstd-static libuv-static brotli-static \
+                                 boost-dev boost-static ccache \
+                                 make
+
+RUN git clone --branch CRYPTOPP_8_7_0 https://github.com/weidai11/cryptopp.git /cryptopp && \
+    cd /cryptopp && CXXFLAGS="-DNDEBUG -g2 -O3 -std=c++11" make -j && make install
+
+RUN git clone --branch v1.8.2 https://github.com/edenhill/librdkafka.git /librdkafka && \
+    cd /librdkafka && ./configure --enable-static --disable-sasl --install-deps && \
+    make && make install
+
+ENV FLASK_PROXY_PORT 8080
+
+ADD libslsfs /action/libslsfs
+
+ADD app /action/
+
+RUN cd /action && time g++ -O3 -std=c++17 -o exec *.cpp \
+    -I/action/libslsfs/ -I/action/libslsfs/slsfs -DFMT_HEADER_ONLY \
+    -L/usr/local/lib/ -pthread \
+    -lcryptopp -lcassandra -lrdkafka++ -lrdkafka -lcurl \
+    -lboost_coroutine -lboost_chrono -lboost_thread -lboost_system
+
+CMD ["/bin/bash", "-c", "cd actionProxy && python -u actionproxy.py"]

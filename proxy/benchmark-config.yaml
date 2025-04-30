@@ -1,0 +1,24 @@
+namenodeEndpoint: /
+hdfsConfigFile: /home/ubuntu/repos/hops/hadoop-dist/target/hadoop-3.2.0.3-SNAPSHOT/etc/hadoop/hdfs-site.xml
+followers:
+        -
+                ip: 172.31.7.155
+                user: ubuntu
+        -
+                ip: 172.31.1.155
+                user: ubuntu
+        -
+                ip: 172.31.4.10
+                user: ubuntu
+        -
+                ip: 172.31.4.136
+                user: ubuntu               
+        -
+                ip: 172.31.8.71
+                user: ubuntu
+        -
+                ip: 172.31.14.4
+                user: ubuntu
+        -
+                ip: 172.31.3.50
+                user: ubuntu

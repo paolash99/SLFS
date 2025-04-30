@@ -1,0 +1,12 @@
+{
+    "type": "wakeup",
+    "launch": "server",
+    "proxyhost": "%1%",
+    "proxyport": "%2%",
+    "blocksize":  %3%,
+    "storagetype": "cassandra",
+    "storageconfig": {
+        "host": "192.168.0.66",
+        "tablename": "replication1.tableB"
+    }
+}

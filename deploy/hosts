@@ -1,0 +1,39 @@
+ansible ansible_connection=local
+
+
+[edge]
+192.168.0.80         ansible_host=192.168.0.80 ansible_connection=local
+
+[controllers]
+controller0           ansible_host=192.168.0.80 ansible_connection=local
+
+[kafkas]
+kafka0                ansible_host=192.168.0.72  ansible_connection=ssh ansible_user=ubuntu
+kafka1                ansible_host=192.168.0.133 ansible_connection=ssh ansible_user=ubuntu
+kafka2                ansible_host=192.168.0.80 ansible_connection=ssh ansible_user=ubuntu
+
+[schedulers]
+scheduler0            ansible_host=192.168.0.80 ansible_connection=local
+
+[zookeepers:children]
+kafkas
+
+[elasticsearch:children]
+db
+
+[invokers]
+invoker0              ansible_host=ow-invoker-1  ansible_connection=ssh ansible_user=ubuntu
+invoker1              ansible_host=ow-invoker-2  ansible_connection=ssh ansible_user=ubuntu
+
+; db group is only used if db.provider is CouchDB
+[db]
+192.168.0.80          ansible_host=192.168.0.80 ansible_connection=local
+
+[redis]
+192.168.0.80         ansible_host=192.168.0.80 ansible_connection=local
+
+[apigateway]
+192.168.0.80         ansible_host=192.168.0.80 ansible_connection=local
+
+[etcd]
+192.168.0.80         ansible_host=192.168.0.80 ansible_connection=local

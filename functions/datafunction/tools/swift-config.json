@@ -1,0 +1,11 @@
+{
+    "type": "wakeup",
+    "launch": "server",
+    "proxyhost": "",
+    "proxyport": "",
+    "blocksize":  4096,
+    "storagetype": "swift",
+    "storageconfig": {
+        "container": "moc-kvstore-cache"
+    }
+}

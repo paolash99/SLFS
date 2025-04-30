@@ -1,0 +1,13 @@
+[requires]
+boost/1.80.0@
+
+[options]
+boost:shared=False
+poco:enable_data_mysql=False
+poco:enable_data_odbc=False
+poco:enable_data_postgresql=False
+poco:enable_mongodb=False
+onetbb:shared=False
+
+[generators]
+cmake

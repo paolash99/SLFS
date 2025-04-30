@@ -1,0 +1,27 @@
+[requires]
+boost/1.81.0@
+poco/1.12.4@
+fmt/9.1.0@
+zlib/1.2.13@
+libcurl/7.85.0@
+cassandra-cpp-driver/2.15.3@
+openssl/1.1.1s@
+librdkafka/1.9.2@
+pkgconf/1.9.3@
+nlohmann_json/3.11.2@
+
+# onetbb/2021.3.0@ # cannot build on apline by conan, so use direct build
+# aws-sdk-cpp/1.9.234@ # direct build
+# miniIO-cpp4@ # direct build
+
+[options]
+poco:shared=False
+poco:enable_data_mysql=False
+poco:enable_data_odbc=False
+poco:enable_data_postgresql=False
+poco:enable_mongodb=False
+onetbb:shared=False
+librdkafka:shared=False
+
+[generators]
+cmake

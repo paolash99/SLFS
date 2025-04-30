@@ -1,0 +1,9 @@
+include(win-x86_64)
+
+[settings]
+cppstd=17
+build_type=Release
+
+[options]
+boost:shared=False
+boost:without_log=True
