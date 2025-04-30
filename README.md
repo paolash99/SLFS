@@ -1,46 +1,89 @@
-
 # SLFS
 
-Serverless computing frameworks are traditionally suited for stateless, short-lived applications
-that depend on various external services for managing complex states. However, the potential of
-serverless frameworks to accommodate a broader range of applications has sparked a lot of
-interest. This includes using the serverless paradigm for backend systems typically reserved for
-serverful infrastructure.
+**SLFS** (ServerLess File System) is a distributed file system built entirely on serverless functions. While serverless computing is typically used for stateless, short-lived applications, SLFS challenges this norm by enabling actual file system operations via serverless functions.
 
-**SLFS** is the first distributed file system designed using serverless functions to perform actual file
-system operations. It operates atop distributed key-value stores, offering users the flexibility to
-choose cloud-provided or custom storage solutions. By leveraging the elasticity of serverless
-functions, SLFS dynamically scales file operations. It provides a serverless solution that rivals
-traditional server-based distributed file systems in cost-efficiency, performance, and scalability.
+SLFS is built atop distributed key-value stores and supports both cloud-based and custom storage backends. By leveraging the elasticity of serverless platforms, SLFS offers dynamic scaling of file operations while maintaining competitive performance, scalability, and cost-efficiency when compared to traditional server-based distributed file systems.
 
-To run SLFS follow the below steps:
-1. Set up OpenWhisk
-    a. Launch an EC2 instance with the Worker AMI for each worker node.
-    b. Launch an EC2 instance with the Worker AMI for each zookeeper node (same AMI
-    as the worker’s).
-    c. Launch an EC2 instance with the Controller AMI for the controller node.
-    d. Connect to the commander node via ssh.
-    e. Modify the IPs (only) with IPs of the new machines in
-    /slsfs/deploy/openwhisk/ansible/environments/moc/hosts and
-    /slsfs/deploy/openwhisk/ansible/db_local.ini.
-    f. Navigate to /slsfs/deploy and run ./openwhisk_install.sh
-    g. Wait until OpenWhisk is up and running the connect to one of the worker nodes
-    vias ssh.
-    h. Update the ow-ctrl IP in /etc/hosts with the controller node’s IP.
-    i. Navigate to /slsfs/functions/datafunction and run ./deploy-native.sh
-2. Set up the backend
-    a. Launch an EC2 instance with the SSBD AMI for each backend node.
-3. Set up the proxy (repeat all steps for the other proxies except for step c)
-    a. Connect to the proxy node via ssh.
-    b. Update the IPs in /etc/hosts with all the instances IPs.
-    c. Navigate to /slsfs/ssbd and run ./start-localhost.sh
-    d. Update the IPs in /slsfs/proxy/backend/ssbd-27.json with backend nodes’ IP
-    addresses.
-    e. Navigate to /slsfs/proxy and run “make from-docker” to rebuild the proxy image.
-    f. Once the image is built, run “./start_proxy.sh” (or “./start_proxy-new.sh” for the
-    second proxy and “./start_proxy-new-2.sh” for the third proxy).
-4. Format the filesystem
-    a. Run the cmd test program to create the base directory with “docker run -it
-    hare1039/slsfs-client:0.0.2 slsfs-cmd --zookeeper zk://<zookeeper0 IP>:2181”
-    b. While the program is running enter the command: “init /”.
-    c. Use the same program to explore and test SLFS functionality.
+---
+
+## Getting Started
+
+Follow the steps below to deploy and run SLFS.
+
+---
+
+### 1. Set Up OpenWhisk
+
+1. Launch EC2 instances:
+   - One instance with the **Worker AMI** for each worker node.
+   - One instance with the **Worker AMI** for each ZooKeeper node.
+   - One instance with the **Controller AMI** for the controller node.
+
+2. SSH into the **commander node** and perform the following:
+   - Update the IPs in:
+     - `/slsfs/deploy/openwhisk/ansible/environments/moc/hosts`
+     - `/slsfs/deploy/openwhisk/ansible/db_local.ini`
+   - Navigate to `/slsfs/deploy` and run:
+     ```bash
+     ./openwhisk_install.sh
+     ```
+
+3. Once OpenWhisk is up and running:
+   - SSH into one of the **worker nodes**.
+   - Update `/etc/hosts` to include the controller node’s IP as `ow-ctrl`.
+   - Navigate to `/slsfs/functions/datafunction` and run:
+     ```bash
+     ./deploy-native.sh
+     ```
+
+---
+
+### 2. Set Up the Backend
+
+- Launch an EC2 instance with the **SSBD AMI** for each backend node.
+
+---
+
+### 3. Set Up the Proxy
+
+Repeat all steps below for each proxy node (skip step `c` for the second and third proxies).
+
+1. SSH into the proxy node.
+2. Update `/etc/hosts` with the IPs of all instances.
+3. (Only for the first proxy) Navigate to `/slsfs/ssbd` and run:
+   ```bash
+   ./start-localhost.sh
+   ```
+4. Update `/slsfs/proxy/backend/ssbd-27.json` with the backend nodes’ IPs.
+5. Rebuild the proxy Docker image:
+   ```bash
+   cd /slsfs/proxy
+   make from-docker
+   ```
+6. Start the proxy:
+   - First proxy:
+     ```bash
+     ./start_proxy.sh
+     ```
+   - Second proxy:
+     ```bash
+     ./start_proxy-new.sh
+     ```
+   - Third proxy:
+     ```bash
+     ./start_proxy-new-2.sh
+     ```
+
+---
+
+### 4. Format the Filesystem
+
+1. Run the SLFS command-line tool using Docker:
+   ```bash
+   docker run -it hare1039/slsfs-client:0.0.2 slsfs-cmd --zookeeper zk://<zookeeper0-IP>:2181
+   ```
+2. Inside the CLI, run:
+   ```bash
+   init /
+   ```
+3. Use this CLI to explore and test SLFS functionality.
